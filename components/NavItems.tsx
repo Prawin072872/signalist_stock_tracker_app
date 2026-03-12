@@ -4,6 +4,8 @@ import { NAV_ITEMS } from '@/lib/constants'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
+import SearchCommand from './SearchCommand'
+
 
 const NavItems = () => {
 
@@ -16,13 +18,25 @@ const NavItems = () => {
   }
   return (
     <ul className='flex flex-col sm:flex-row p-2 gap-3 sm:gap-10 font-medium'>
-        {NAV_ITEMS.map(({href,title}) => (
-            <li key={href}>
-                <Link href={href} className={`hover:text-yellow-500 transition-colors ${isActive(href) ? 'text-gray-100' : ''}`}>
-                {title}
-                </Link>
+        {NAV_ITEMS.map(({href,label}, index) => {
+          if(href === '/search') 
+            return (
+              <li key={`search-${index}`}>
+                <SearchCommand
+                renderAs="text"
+                label="Search"
+                initialStocks={[{symbol: 'TST', name: 'TEST', exchange: 'NASDAQ', type: 'TYPE'}]}
+                />
+              </li>
+            );
+          
+          
+          return <li key={`${href}-${index}`}>
+              <Link href={href} className={`hover:text-yellow-500 transition-colors ${isActive(href) ? 'text-gray-100' : ''}`}>
+                {label}
+              </Link>
             </li>
-        ))}
+        })}
     </ul>
   )
 }
